@@ -1,8 +1,33 @@
-export type ScriptType = 'User Event' | 'Client' | 'Suitelet' | 'Map/Reduce' | 'Scheduled' | 'RESTlet' | 'Portlet' | 'Mass Update';
-export interface ConversionOptions { comments: boolean; modernize: boolean; governance: boolean; }
-export interface ConversionRequest { source: string; sourceVersion: '1.0' | '2.0'; scriptType: ScriptType; options: ConversionOptions; }
-export interface ConversionResult { code: string; demo: true; apiChanges: { from: string; to: string }[]; }
-export interface ScriptSample { name: string; description: string; type: ScriptType; version: '1.0' | '2.0'; source: string; output: string; changes: ConversionResult['apiChanges']; }
+import {
+  convertScript,
+  type ScriptType,
+  type ConversionOptions,
+  type ConversionRequest,
+  type ConversionResult,
+  type ValidationReport,
+  type ValidationCheck,
+  type ValidationStatus,
+} from './engine';
+
+export type {
+  ScriptType,
+  ConversionOptions,
+  ConversionRequest,
+  ConversionResult,
+  ValidationReport,
+  ValidationCheck,
+  ValidationStatus,
+};
+
+export interface ScriptSample {
+  name: string;
+  description: string;
+  type: ScriptType;
+  version: '1.0' | '2.0';
+  source: string;
+  output: string;
+  changes: ConversionResult['apiChanges'];
+}
 export const samples: ScriptSample[] = [
   {
     name: 'Sales order · User Event', description: 'Set a memo before a sales order is saved', type: 'User Event', version: '1.0',
@@ -122,16 +147,18 @@ define(['N/log'], (log) => {
     changes: [{ from: '@NApiVersion 2.0', to: '@NApiVersion 2.1' }],
   },
 ];
-// Replace this adapter with a real service. Unknown input must never receive a sample output.
 export async function convertDemo(request: ConversionRequest): Promise<ConversionResult> {
-  const sample = samples.find(s => s.source.trim() === request.source.trim() && s.version === request.sourceVersion && s.type === request.scriptType);
-  if (!sample) throw new Error('Demo conversion supports only unmodified sample scripts with matching settings. Load a sample to try it. Your source has been kept unchanged.');
-  await new Promise(resolve => setTimeout(resolve, 450));
-  let code = sample.output;
-  if (!request.options.comments) code = code.replace(/^    \/\/.*\n/gm, '');
-  if (!request.options.modernize) {
-    code = code.replace(/define\(\[([^\]]*)\], \(([^)]*)\) => \{/g, 'define([$1], function($2) {');
-    code = code.replace(/const (beforeSubmit|saveRecord) = \(context\) => \{/g, 'function $1(context) {').replace(/\n  };\n  return/g, '\n  }\n  return');
+  const sample = samples.find(
+    s => s.source.trim() === request.source.trim() && s.version === request.sourceVersion && s.type === request.scriptType
+  );
+  if (sample) {
+    await new Promise(resolve => setTimeout(resolve, 350));
   }
-  return { code, demo: true, apiChanges: sample.changes };
+
+  // Real conversion engine for all source code (including samples)
+  const result = await convertScript(request);
+  return {
+    ...result,
+    demo: Boolean(sample),
+  };
 }

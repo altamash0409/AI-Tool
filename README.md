@@ -1,38 +1,40 @@
-# Suitescript Forge
+# Consider Pie — SuiteScript AI Converter
 
-Build a modern SuiteScript AI Converter web app using React, TypeScript, and Tailwind CSS. Use a premium dark navy and white theme with a clean, responsive, VS Code-inspired interface.
+A high-performance SuiteScript migration workspace built by **Consider Pie** using React, TypeScript, TanStack Start, and Tailwind CSS. Built with a clean, responsive, VS Code-inspired interface for NetSuite developers and administrators.
 
-Create a three-column layout:
+![Consider Pie Logo](/logo.png)
 
-Left sidebar: Source version (SuiteScript 1.0 / 2.0), target version (SuiteScript 2.1), script type dropdown (User Event, Client, Suitelet, Map/Reduce, Scheduled, RESTlet, Client Script, etc.), and conversion options.
+## Overview
 
-Center workspace: Source and converted code editors with syntax highlighting, line numbers, paste/upload, copy, download, and a prominent Convert button.
+Consider Pie automatically modernizes legacy SuiteScript 1.0 and 2.0/2.x scripts into clean, production-grade SuiteScript 2.1 AMD modules:
 
-Right sidebar: AI conversion summary, API changes, script checkpoints, warnings, errors, governance risks, and manual testing recommendations.
+- **Script Type Preservation**: Strictly preserves script types (`User Event`, `Client`, `Suitelet`, `Map/Reduce`, `Scheduled`, `RESTlet`, `Portlet`, `Mass Update`).
+- **Module Mapping**: Automatically replaces legacy `nlapi*` calls with modular SuiteScript 2.1 APIs (`N/record`, `N/search`, `N/log`, `N/runtime`, `N/currentRecord`, etc.).
+- **ES6+ Modernization**: Upgrades function signatures, context objects, block scoping (`const`/`let`), arrow functions, and object shorthand syntax.
+- **Automated Validation**: Real validation engine checking annotations, module imports, entry-point exports, function signatures, legacy API remnants, and parameter options.
+- **Privacy by Default**: Scripts are converted and validated locally inside your browser. No proprietary code is sent to third-party servers.
 
-Use reusable components, Lucide icons, and a professional developer-tool UI. Keep the implementation lightweight and avoid unnecessary dependencies.
+## Workspace Layout
 
-Build functional UI interactions with sample scripts. Structure the code for future AI API integration, but do not build a complex backend yet. Never fake successful conversions; clearly label demo conversions until a real conversion engine is connected. Prioritize speed, clean code, and a polished desktop-first design.
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://suitescript-forge.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d06f2ec9-abda-4bc5-95e3-49459657d6b1).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+1. **Configuration Sidebar**: Select source version (1.0 / 2.0), target version (2.1), script type, and conversion options (comments preservation, modern syntax, governance checks).
+2. **Editor Workspace**: Side-by-side synchronized source and converted code editors with token highlighting, line numbers, paste, upload, copy, and download.
+3. **Insights Sidebar**: Detailed conversion summary, API diffs, script checkpoints, governance limit warnings, and full automated Validation Report with suggested fixes.
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+```sh
+npm install
+npm run dev
+```
+
+### Running Tests
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm test
+```
+
+### Production Build
+
+```sh
+npm run build
 ```

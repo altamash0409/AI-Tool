@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { reportRuntimeError } from "../lib/error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -39,7 +39,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportRuntimeError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -78,10 +78,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SuiteShift — SuiteScript AI Converter" },
-      { name: "description", content: "The SuiteScript migration workspace for NetSuite developers." },
-      { property: "og:title", content: "SuiteShift — SuiteScript AI Converter" },
-      { property: "og:description", content: "The SuiteScript migration workspace for NetSuite developers." },
+      { title: "Consider Pie — SuiteScript AI Converter" },
+      { name: "description", content: "Consider Pie — The SuiteScript 2.1 migration workspace for NetSuite developers." },
+      { property: "og:title", content: "Consider Pie — SuiteScript AI Converter" },
+      { property: "og:description", content: "Consider Pie — The SuiteScript 2.1 migration workspace for NetSuite developers." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -90,7 +90,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png?v=2", type: "image/png" },
+      { rel: "shortcut icon", href: "/favicon.png?v=2", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png?v=2" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" },
     ],
   }),
